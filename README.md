@@ -31,6 +31,37 @@ math-tutor/
 │       ├── sw.js               # Service worker for offline caching
 │       └── manifest.json
 └── MathTutor.sln
+
+PROPOSED
+math-tutor/
+ └─ src/
+     ├─ MathTutor.Api/            # Presentation layer (Controllers, DTOs)
+     │   ├─ Controllers/
+     │   │   └─ SessionController.cs
+     │   ├─ Models/
+     │   │   └─ DTOs/
+     │   │       ├─ SessionConfigDto.cs
+     │   │       ├─ AnswerSubmissionDto.cs
+     │   │       └─ SessionSummaryDto.cs
+     │   └─ Program.cs
+     │
+     ├─ MathTutor.Application/    # Application layer (Use cases / services)
+     │   ├─ Interfaces/
+     │   │   └─ ISessionService.cs
+     │   └─ Services/
+     │       └─ SessionService.cs
+     │
+     ├─ MathTutor.Domain/         # Domain layer (Entities, Value Objects, Logic)
+     │   └─ Entities/
+     │       ├─ TestSession.cs
+     │       ├─ TestSessionQuestion.cs
+     │       └─ MathProblem.cs
+     │
+     └─ MathTutor.Infrastructure/ # Infrastructure layer (DbContext, EF Core)
+         ├─ Data/
+         │   └─ AppDbContext.cs
+         └─ Repositories/         # Optional if using repository pattern
+
 ```
 
 > Notes:
@@ -47,10 +78,11 @@ math-tutor/
 cd src
 
 # initialise database creation (sqlite)
-dotnet ef migrations add InitialCreate
+cd MathTutor.Api
+dotnet ef migrations add InitialCreate --project ../MathTutor.Infrastructure
 
 # create database
-dotnet ef database update
+dotnet ef database update --project ../MathTutor.Infrastructure
 
 # build project
 dotnet build
